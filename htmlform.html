@@ -1,0 +1,26 @@
+  <form class="validate form-horizontal"  method="post" id="uploadFileForm" enctype="multipart/form-data"> 
+
+                    <div class="form-group">
+                      <div class="col-lg-8">
+                        <input name="fileToUpload" id="excel_file"   type="file"  class="validate[required] form-control" >
+
+      <div class="progress-bar progress-bar-primary" id="progressBar" style="width:0%;"><span id="status"></span></div>
+
+  <h3 id="status"></h3><br>
+  <p id="loaded_n_total"></p>
+  <p id="linktodownload"></p>
+
+
+                          </div>
+                     
+             
+                      <div class="col-lg-4">
+                     <span class="btn btn-success btn-import"><i class="fa fa-arrow-up "></i>Upload</span>
+                   </div>
+
+  <input type="hidden" name="j" value="importFileAjax">
+
+                    </div>
+                  </div>
+
+                  </form>
