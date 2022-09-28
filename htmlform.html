@@ -1,4 +1,10 @@
-  <form class="validate form-horizontal"  method="post" id="uploadFileForm" enctype="multipart/form-data"> 
+  <html>
+    <head>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    </head>
+    <body>
+
+<form class="validate form-horizontal"  method="post" id="uploadFileForm" enctype="multipart/form-data"> 
 
                     <div class="form-group">
                       <div class="col-lg-8">
@@ -24,3 +30,82 @@
                   </div>
 
                   </form>
+    
+    </body>
+</html>
+
+ <script>
+
+  $(document).ready(function() {
+  $( ".btn-import" ).click(function() {
+  if($("#uploadFileForm").validationEngine('validate') == true){
+       uploadFile();
+      }
+      });
+  });
+
+
+  function _(ol){
+    return document.getElementById(ol);
+  }
+  function uploadFile(){
+  //default
+    _("loaded_n_total").innerHTML = "Uploading ....."
+    var percent = 0;
+    _("progressBar").value = Math.round(percent);
+    progressBar.style.width ="0%";
+    _("status").innerHTML = Math.round(percent)+"%";
+   _("linktodownload").innerHTML="";
+    //FORM 
+    var file = _("excel_file").files[0];
+    var formdata = new FormData();
+    formdata.append("file_to_upload", file);
+    formdata.append("j", "newFileAjax");
+    //REQUEST
+    var ajax = new XMLHttpRequest();
+    ajax.upload.addEventListener("progress", progressHandler, false);
+    ajax.addEventListener("load", completeHandler, false);
+    ajax.addEventListener("error", errorHandler, false);
+    ajax.addEventListener("abort", abortHandler, false);
+    ajax.open("POST", "upload.php");
+    ajax.send(formdata);
+  //CHECK SERVER RESPONSE
+    ajax.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+         _("linktodownload").innerHTML=this.responseText;
+
+      }
+    };
+
+
+  }
+  //LIVE PROGRESS
+  function progressHandler(event){
+    _("loaded_n_total").innerHTML = "Uploaded "+event.loaded+" bytes of "+event.total;
+    var percent = (event.loaded / event.total) * 100;
+    _("progressBar").value = Math.round(percent);
+    progressBar.style.width = Math.round(percent)+"%";
+    _("status").innerHTML = Math.round(percent)+"%";
+
+  }
+  //ONCOMPLETED
+  function completeHandler(event){
+    _("status").innerHTML = event.target.responseText;
+    _("progressBar").value = 100;
+    _("status").innerHTML = "100%";
+    progressBar.style.width = "100%";
+
+  }
+  //ERROR
+  function errorHandler(event){
+    _("status").innerHTML = "Upload Failed";
+  }
+  //CANCELLED
+  function abortHandler(event){
+    _("status").innerHTML = "Upload Aborted";
+  }
+
+
+  </script>
+
+
